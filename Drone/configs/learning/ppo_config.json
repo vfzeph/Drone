@@ -1,0 +1,156 @@
+{
+  "learning_rate": 0.0001,
+  "gamma": 0.99,
+  "tau": 0.95,
+  "batch_size": 64,
+  "num_timesteps": 2000000,
+  "ppo": {
+    "learning_rate": 0.0003,
+    "n_steps": 2048,
+    "batch_size": 64,
+    "n_epochs": 2000,
+    "gamma": 0.99,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "ent_coef": 0.01,
+    "vf_coef": 0.5,
+    "max_grad_norm": 0.5,
+    "use_sde": true,
+    "sde_sample_freq": 4,
+    "tensorboard_log": "logs/tensorboard_logs/ppo_airsim_tensorboard/",
+    "verbose": 1,
+    "seed": null,
+    "device": "auto",
+    "continuous": true,
+    "save_freq": 10000
+  },
+  "environment": {
+    "env_name": "Africa_001",
+    "reward_threshold": 250,
+    "max_episode_steps": 1000,
+    "state_dim": 16,
+    "action_dim": 4,
+    "reward_scale": 20,
+    "proximity_threshold": 5.0,
+    "collision_penalty": 25,
+    "height_target": -10,
+    "height_tolerance": 1.0,
+    "height_penalty": 1,
+    "movement_penalty": 0.1,
+    "smoothness_penalty": 0.1,
+    "duration": 0.1,
+    "exploration_area": {
+      "x_min": -1000,
+      "x_max": 1000,
+      "y_min": -1000,
+      "y_max": 1000,
+      "z_min": -100,
+      "z_max": 100
+    }
+  },
+  "policy_network": {
+    "input_size": 16,
+    "hidden_layers": [256, 256],
+    "output_size": 4,
+    "use_batch_norm": true,
+    "use_dropout": true,
+    "dropout_rate": 0.2,
+    "use_attention": true,
+    "num_action_heads": 1
+  },
+  "critic_network": {
+    "input_size": 16,
+    "hidden_layers": [256, 256],
+    "output_size": 1,
+    "use_batch_norm": true,
+    "use_dropout": true,
+    "dropout_rate": 0.2,
+    "use_attention": true
+  },
+  "exploration": {
+    "strategy": "epsilon_decay",
+    "initial_epsilon": 1.0,
+    "min_epsilon": 0.05,
+    "epsilon_decay_rate": 0.9995
+  },
+  "model_checkpointing": {
+    "checkpoint_interval": 10,
+    "save_best_only": true,
+    "checkpoint_dir": "models/checkpoints"
+  },
+  "logging": {
+    "log_interval": 10,
+    "log_dir": "logs/",
+    "tensorboard": true,
+    "tensorboard_log_dir": "logs/tensorboard_logs",
+    "model_save_path": "models/saved_models"
+  },
+  "advanced_training_techniques": {
+    "gradient_clipping": 0.5,
+    "use_gae": true,
+    "gae_lambda": 0.95,
+    "normalize_advantages": true
+  },
+  "early_stopping": {
+    "patience": 10
+  },
+  "reward_adjustments": {
+    "collision_penalty": 50,
+    "reward_threshold": 250
+  },
+  "shared_components": {
+    "residual_block": {
+      "input_dim": 128,
+      "hidden_dim": 128,
+      "dropout_rate": 0.2
+    },
+    "attention_layer": {
+      "input_dim": 128,
+      "hidden_dim": 128
+    }
+  },
+  "icm": {
+    "state_dim": 16,
+    "action_dim": 4,
+    "image_channels": 3,
+    "image_height": 144,
+    "image_width": 256,
+    "cnn": {
+        "conv1": {"out_channels": 32, "kernel_size": 8, "stride": 4},
+        "conv2": {"out_channels": 64, "kernel_size": 4, "stride": 2},
+        "conv3": {"out_channels": 64, "kernel_size": 3, "stride": 1}
+    },
+    "state_encoder": {"hidden_dim": 128},
+    "forward_model": {"hidden_dim": 256},
+    "inverse_model": {"hidden_dim": 256}
+  },
+  "predictive_model": {
+    "learning_rate": 0.0001,
+    "hidden_layers": [256, 256]
+  },
+  "hrl": {
+    "use_hierarchical": true,
+    "high_level_policy": {
+      "input_size": 16,
+      "hidden_layers": [256, 256],
+      "output_size": 4
+    },
+    "sub_goal_dim": 3,
+    "low_level_policy": {
+      "input_size": 19,
+      "hidden_layers": [256, 256],
+      "output_size": 4
+    }
+  },
+  "curriculum_learning": {
+    "use_curriculum": true,
+    "initial_difficulty": 1,
+    "difficulty_increment": 1,
+    "difficulty_threshold": 200
+  },
+  "multi_agent": {
+    "use_multi_agent": true,
+    "num_agents": 2,
+    "hidden_layers": [256, 256]
+  }
+}
